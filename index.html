@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biblioteca Escolar</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    header {
+      background-color: #2c3e50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .container {
+      padding: 20px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .book {
+      background: white;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    .book h3 {
+      margin: 0;
+    }
+    .book p {
+      margin: 5px 0 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Biblioteca Escolar</h1>
+  </header>
+  <div class="container">
+    <input type="text" id="search" placeholder="Buscar libros por título o autor...">
+    <div id="book-list"></div>
+  </div>
+
+  <script>
+    const libros = [
+      { titulo: "Cien años de soledad", autor: "Gabriel García Márquez", disponible: true },
+      { titulo: "Don Quijote de la Mancha", autor: "Miguel de Cervantes", disponible: false },
+      { titulo: "El Principito", autor: "Antoine de Saint-Exupéry", disponible: true },
+      { titulo: "La sombra del viento", autor: "Carlos Ruiz Zafón", disponible: true },
+      { titulo: "Rayuela", autor: "Julio Cortázar", disponible: false }
+    ];
+
+    const searchInput = document.getElementById("search");
+    const bookList = document.getElementById("book-list");
+
+    function mostrarLibros(filtro = "") {
+      bookList.innerHTML = "";
+      const filtrados = libros.filter(libro =>
+        libro.titulo.toLowerCase().includes(filtro.toLowerCase()) ||
+        libro.autor.toLowerCase().includes(filtro.toLowerCase())
+      );
+
+      if (filtrados.length === 0) {
+        bookList.innerHTML = "<p>No se encontraron libros.</p>";
+        return;
+      }
+
+      filtrados.forEach(libro => {
+        const div = document.createElement("div");
+        div.className = "book";
+        div.innerHTML = `
+          <h3>${libro.titulo}</h3>
+          <p><strong>Autor:</strong> ${libro.autor}</p>
+          <p><strong>Disponible:</strong> ${libro.disponible ? 'Sí' : 'No'}</p>
+        `;
+        bookList.appendChild(div);
+      });
+    }
+
+    searchInput.addEventListener("input", () => mostrarLibros(searchInput.value));
+
+    // Mostrar todos los libros al cargar la página
+    mostrarLibros();
+  </script>
+</body>
+</html>
