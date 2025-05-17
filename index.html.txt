@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Biblioteca Escolar</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    h1 {
+      color: #2c3e50;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      background: white;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <h1>Libros disponibles</h1>
+  <ul id="lista-libros"></ul>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDL2nJQqjNc0_r9jsbu1au3JzozN5Vbkdc",
+      authDomain: "biblioteca-escolar-7bea3.firebaseapp.com",
+      projectId: "biblioteca-escolar-7bea3",
+      storageBucket: "biblioteca-escolar-7bea3.firebasestorage.app",
+      messagingSenderId: "708157543031",
+      appId: "1:708157543031:web:02deb4c28111e9e0e06c72",
+      measurementId: "G-EX1SWXKSCJ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function mostrarLibros() {
+      const librosRef = collection(db, "libros");
+      const querySnapshot = await getDocs(librosRef);
+      const lista = document.getElementById("lista-libros");
+      querySnapshot.forEach((doc) => {
+        const datos = doc.data();
+        const li = document.createElement("li");
+        li.textContent = datos.titulo + (datos.disponible === false ? " (No disponible)" : "");
+        lista.appendChild(li);
+      });
+    }
+
+    mostrarLibros();
+  </script>
+</body>
+</html>
